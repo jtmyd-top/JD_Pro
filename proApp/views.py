@@ -19,9 +19,9 @@ from django.http import JsonResponse
 import subprocess
 import requests
 
-base_url = "https://ql.03vps.cn"
-client_id = "99V9vJ_D-b24"
-client_secret = "jBFsl0f6d5mZMU_uPHWfJw2G"
+base_url = ""
+client_id = ""
+client_secret = ""
 def extract_value(cookie_str, key):
     start_index = cookie_str.find(f'{key}=')
     if (start_index == -1):
