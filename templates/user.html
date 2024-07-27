@@ -1,0 +1,253 @@
+{% extends 'index.html' %}
+    <meta charset="UTF-8">
+    {% block title %}
+    <title>查询🐕东账户</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css" />
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://unpkg.com/element-plus"></script>
+    <style>
+        button.jd_Eye {
+            width: 10%;
+            text-align: center;
+        }
+        td.wskey {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    vertical-align: middle;
+    padding: 10px;
+    height: 100%;
+    line-height: 100%;
+}
+        a {
+            text-decoration: none;
+            color: #3498db;
+        }
+        input {
+            padding: 10px;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            outline: none;
+            font-size: 16px;
+            background: linear-gradient(to right, #3498db, #ff6b6b);
+            background-clip: border-box;
+            -webkit-background-clip: text;
+            color: transparent;
+            transition: background 0.5s, color 0.5s;
+        }
+        input:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 5px rgba(255, 107, 107, 0.5);
+        }
+        input:hover {
+            border-color: #e74c3c;
+        }
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 100% 0;
+            }
+            100% {
+                background-position: -100% 0;
+            }
+        }
+        input:hover, input:focus {
+            animation: gradientAnimation 2s linear infinite;
+        }
+        body {
+            height: 100%;
+            margin: 0;
+            wdit:100vh;
+        }
+        form {
+            #idth: 800px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        table {
+            max-width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            word-wrap: break-word; /* 使长单词换行 */
+   		  word-break: break-all; /* 强制长单词在任何地方换行 */
+            white-space: normal; /* 允许正常换行 */
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+            background: linear-gradient(to right, #3498db, #ff6b6b);
+            word-wrap: break-word; /* 使长单词换行 */
+   		  word-break: break-all; /* 强制长单词在任何地方换行 */
+            white-space: normal; /* 允许正常换行 */
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: #333;
+            animation: gradientAnimation 2s infinite linear;
+        }
+        tr {
+            background: linear-gradient(to right, #3498db, #ff6b6b);
+            color: transparent;
+            animation: gradientAnimation 2s infinite linear;
+        }
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 100% 0;
+            }
+            100% {
+                background-position: -100% 0;
+            }
+        }
+        .form-container {
+    max-width: 100%;
+    margin: 0 auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    align-content: space-between;
+}
+    </style>
+    {% endblock title %} 
+
+{% block content %}
+
+    <form action="{% url 'proApp:search' %}" method="POST" class="yhdl" novalidate>
+        {% csrf_token %}
+        {{ form.username }}
+        {% if msg == "请按规则输入数据" %}
+            <script type="text/javascript">
+                alert("请按规则输入数据:\n\t" + "{{ form.username.errors.0 }}\n")
+            </script>
+            <div class="errors">
+                <p style="color:red" class="errors_01">{{ form.username.errors.0 }}</p>
+            </div>
+        {% endif %}
+        <button type="submit" class="logo">
+            <span>
+                <i class="si si-login mr-1" aria-hidden="true"></i>
+                查询
+            </span>
+        </button>
+    </form>
+ 
+    {% if msg == "查询的数据不存在，请登陆后查询<a href='https://pro.03vps.cn'>点我登陆</a>" %}
+        <script type="text/javascript">
+            alert("🐕东账户不存在，请登陆后查询")
+        </script>
+        {% autoescape off %}<h1>{{ msg }}</h1>{% endautoescape %}
+    {% elif msg == "数据异常，请按照规则输入" %}
+        <script type="text/javascript">
+            alert("数据异常，请按照规则输入:\n\t" + "{{ form.username.errors.0 }}")
+        </script>
+        <div class="errors">
+            <p style="color:red" class="errors_01">{{ form.username.errors.0 }}</p>
+        </div>
+    {% elif msg == "数据存在" %}
+        <table frame="box" rules="all" width="100%" id="tfhover" class="tftable" border="1">
+            <caption class="thead"><h1>京东账户信息</h1></caption>
+            <thead class="tab tab1">
+                <th>京东账户名(pin)</th>
+                <th>备注</th>
+                <th>uuid</th>
+                <th>是否有效</th>
+                <th>wskey/MCK</th>
+            </thead>
+            <tbody>
+            {% for JD in first_result %}
+                <tr class="tab2">
+                    <td>{{ JD.pin }}</td>
+                    <td>{{ JD.remark }}</td>
+                    <td>{{ JD.uuid }}</td>
+                    <td><a href="#" class="borr" style="color:red">{{ JD.status|yesno:"是,否" }}</a></td>
+                    {% load custom_filters %}
+<script>
+    function toggleVisibility(pin) {
+        console.log("pin:", pin);
+        var visibleElement = document.getElementById('visible-' + pin);
+        var hiddenElement = document.getElementById('hidden-' + pin);
+        var iconElement = document.getElementById('icon-' + pin);
+        console.log("Visible Element:", visibleElement);
+        console.log("Hidden Element:", hiddenElement);
+        console.log("Icon Element:", iconElement);
+
+        if (!visibleElement || !hiddenElement || !iconElement) {
+            console.error("One or more elements not found.");
+            return;
+        }
+
+        console.log("Visible Element Style:", visibleElement.style);
+        console.log("Hidden Element Style:", hiddenElement.style);
+
+        if (visibleElement.style.display === 'none') {
+            visibleElement.style.display = 'inline';
+            hiddenElement.style.display = 'none';
+            iconElement.classList.remove('fa-eye-slash');
+            iconElement.classList.add('fa-eye');
+        } else {
+            visibleElement.style.display = 'none';
+            hiddenElement.style.display = 'inline';
+            iconElement.classList.remove('fa-eye');
+            iconElement.classList.add('fa-eye-slash');
+        }
+    }
+</script>
+<td class="{% if JD.ckvalue %}ckvalue{% else %}wskey{% endif %}">
+    {% if JD.envt == 2 %}
+        {% if JD.wskey %}
+            <span id="visible-{{ JD.id }}" style="display:none">{{ JD.wskey}}</span>
+            <span id="hidden-{{ JD.id }}">{{ JD.wskey|hide_sensitive_info  }}</span>
+            <button onclick="toggleVisibility('{{ JD.id }}')" class="jd_Eye">
+                <i id="icon-{{ JD.id }}" class="fas fa-eye-slash"></i>
+            </button>
+        {% else %}
+            <span>无敏感信息</span>
+        {% endif %}
+    {% else %}
+        {% if JD.mck %}
+            <span id="visible-{{ JD.id }}" style="display:none">{{ JD.mck}}</span>
+            <span id="hidden-{{ JD.id }}">{{ JD.mck|hide_sensitive_info }}</span>
+            <button onclick="toggleVisibility('{{ JD.id }}')" class="jd_Eye">
+                <i id="icon-{{ JD.id }}" class="fas fa-eye-slash"></i>
+            </button>
+        {% else %}
+            <span>无敏感信息</span>
+        {% endif %}
+    {% endif %}
+</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if msg1 %}
+            {% autoescape off %}<tr id="use"><td colspan="5">{{ msg1 }}</td></tr>{% endautoescape %}
+        {% endif %}
+    {% endif %}
+
+{% endblock content %}

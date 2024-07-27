@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}
+    <title>JD-Pro</title>
+    {% endblock title %}
+    <style>
+        /* 全局样式 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: #3498db;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .container a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+        }
+        .container a:hover {
+            text-decoration: underline;
+        }
+        /* 表单样式 */
+        .form-container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #3498db;
+        }
+         .form-username {
+            width: 100%;
+            height: 40px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+           # pointer-events: none; /* 禁止用户通过点击或按键修改输入 */
+        }
+        .form-username:focus {
+            border-color: #66afe9;
+            box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+            outline: none;
+        }
+        a {
+    text-decoration: none;
+    color: #00c4e6;
+}
+        .form-env {
+            width: 100%;
+            height: 60px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            resize: vertical; /* 允许用户调整textarea的高度 */
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background: linear-gradient(to right, #3498db, #ff6b6b);
+            background-clip: border-box;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .form-env:focus {
+            border-color: #66afe9;
+            box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+            outline: none;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .btn-submit:hover {
+            background-color: #2980b9;
+        }
+        /* 错误提示样式 */
+        .errors {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .errors_01 {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航链接 -->
+    <div class="container">
+        <p><a href="{% url 'proApp:index' %}">登录</a></p>
+        <p><a href="{% url 'proApp:search' %}">查询</a></p>
+    </div>
+
+    <!-- 主要内容区域 -->
+    <div class="form-container">
+        {% block content %}
+        <p class="form-title"><a href="#">🐕东代挂备用登陆方式</a></p>
+        <p class="form-title"><a href="https://pro.03vps.cn">点我跳转:🐕东代挂主站</a></p>
+        <form action="{% url 'proApp:index' %}" method="POST" class="yhdl" novalidate>
+            {% csrf_token %}
+            {{ form.env }}
+            {{ form.remark }}
+            {% if msg == "表单数据无效,请重新输入" %}
+                <div class="errors">
+                    <p class="errors_01">{{ form.env.errors.0 }}</p>
+                </div>
+            {% endif %}
+            {% if msg == "登陆成功，有效期1~3天" or msg == "获取账户失败，请检查网络是否正常" or msg == "获取账户成功" or msg == "登陆成功，请前往主站重新登陆，获取推送二维码，谢谢!" or msg == "启用变量失败,再试一次" or msg == "更新变量失败" or msg == "启用 pt_pin 失败,请稍后再试" or msg == "更新 pt_pin 失败,请稍后再试" or msg == "启用新的 pt_pin 失败" or msg == "添加新的 pt_pin 失败" or msg == "查询青龙环境变量失败，请联系网站管理员" or msg == "启用 wskey 失败" or msg == "更新 wskey 失败" or msg == "启用新的 wskey 失败" or msg == "添加新的 wskey 失败" or msg == "请求青龙 API 出现异常，请联系网站管理员" or msg == "解析青龙 API 出现异常，请联系网站管理员"%}
+                <div class="errors">
+                    <p class="errors_01">{{ msg }}</p>
+                </div>
+            {% endif %}
+            <button type="submit" class="btn-submit">
+                <span>
+                    <i class="si si-login mr-1" aria-hidden="true"></i>
+                    提交
+                </span>
+            </button>
+        </form>
+        {% endblock content %}
+    </div>
+</body>
+</html>
