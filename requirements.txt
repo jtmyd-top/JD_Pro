@@ -1,0 +1,9 @@
+requests
+selenium
+pillow
+pytesseract
+django==3.1.6
+aiohttp
+pillow
+urllib3
+ufw
